@@ -1,0 +1,69 @@
+Immutable объекты
+
+Правила создания Immutable объекта:
+
+1. Все поля отмечены final.
+2. Состояние объекта не изменяется после создания объекта.
+
+Пример:
+
+public class BishopBlack implements Figure {
+    private final Cell position;
+
+    public BishopBlack(final Cell position) {
+        this.position = position;
+    }
+
+    @Override
+    public Cell position() {
+        return this.position;
+    }
+
+    @Override
+    public Cell[] way(Cell source, Cell dest) {
+        throw new IllegalStateException(
+                String.format("Could not way by diagonal from %s to %s", source, dest)
+        );
+    }
+
+    public boolean isDiagonal(Cell source, Cell dest) {
+        return false;
+    }
+
+    @Override
+    public Figure copy(Cell dest) {
+        return new BishopBlack(dest);
+    }
+}
+
+Класс BlackBishop не меняет состояние после создания объекта.
+
+Пример не-Immutable класса:
+
+import net.jcip.annotations.ThreadSafe;
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
+@ThreadSafe
+public class Cache {
+    private final ConcurrentHashMap<Integer, String> dic = new ConcurrentHashMap<>();
+    private final AtomicInteger ids = new AtomicInteger();
+
+    public Cache() {
+        dic.put(ids.incrementAndGet(), "Petr Arsentev");
+        dic.put(ids.incrementAndGet(), "Ivan Ivanov");
+    }
+
+    public void add(String name) {
+        dic.put(ids.incrementAndGet(), name);
+    }
+
+    public boolean contains(String name) {
+        return dic.containsValue(name);
+    }
+}
+
+В этом классе все поля обозначены final, но метод add изменяет состояние объекта Cache.
+Класс Cache потокобезопасный, но не Immutable.
+
