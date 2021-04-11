@@ -1,4 +1,4 @@
-package ru.job4j;
+package ru.job4j.concurrent.common_resources;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;

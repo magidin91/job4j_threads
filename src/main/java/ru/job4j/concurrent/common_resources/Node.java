@@ -1,4 +1,4 @@
-package ru.job4j;
+package ru.job4j.concurrent.common_resources;
 
 public class Node<T> {
     private final Node<T> next;
