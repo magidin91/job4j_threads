@@ -1,6 +1,7 @@
 package wait_notify_notify_all;
 
 import org.junit.Test;
+import ru.job4j.concurrent.wait_notify_notify_all.SimpleBlockingQueue;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -9,7 +10,7 @@ public class SimpleBlockingQueueTest {
 
     @Test
     public void when3OfferAnd3Poll() throws InterruptedException {
-        SimpleBlockingQueue<Integer> blockingQueue = new SimpleBlockingQueue<>(3);
+        SimpleBlockingQueue<Integer> blockingQueue = new SimpleBlockingQueue<>();
 
         Thread producer = new Thread(() ->
         {
@@ -24,7 +25,12 @@ public class SimpleBlockingQueueTest {
         {
             int i = 0;
             while (i < 3) {
-                blockingQueue.poll();
+                try {
+                    blockingQueue.poll();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 i++;
             }
         });
