@@ -6,13 +6,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ThreadPool {
+    public static final int SIZE = Runtime.getRuntime().availableProcessors();
     private final List<Thread> threads = new LinkedList<>();
     private final SimpleBlockingQueue<Runnable> tasks = new SimpleBlockingQueue<>();
 
-    public ThreadPool() {
-        int size = Runtime.getRuntime().availableProcessors();
-
-        for (int i = 0; i < size; i++) {
+    public void work(Runnable job) {
+        tasks.offer(job);
+        if (threads.size() < SIZE){
             Thread thread = new Thread(
                     () -> {
                         while (!Thread.currentThread().isInterrupted()) {
@@ -27,10 +27,6 @@ public class ThreadPool {
             );
             thread.start();
         }
-    }
-
-    public void work(Runnable job) {
-        tasks.offer(job);
     }
 
     public void shutdown() {
