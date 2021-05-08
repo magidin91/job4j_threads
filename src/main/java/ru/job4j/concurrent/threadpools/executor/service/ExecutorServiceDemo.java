@@ -1,4 +1,4 @@
-package ru.job4j.concurrent.threadpools.executorservice;
+package ru.job4j.concurrent.threadpools.executor.service;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
