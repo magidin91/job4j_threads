@@ -12,6 +12,16 @@ public class ThreadPool {
 
     public void work(Runnable job) {
         tasks.offer(job);
+        addWorker();
+    }
+
+    public void shutdown() {
+        for (Thread thread : threads) {
+            thread.interrupt();
+        }
+    }
+
+    private void addWorker() {
         if (threads.size() < SIZE){
             Thread thread = new Thread(
                     () -> {
@@ -25,13 +35,8 @@ public class ThreadPool {
                         }
                     }
             );
+            threads.add(thread);
             thread.start();
-        }
-    }
-
-    public void shutdown() {
-        for (Thread thread : threads) {
-            thread.interrupt();
         }
     }
 }
