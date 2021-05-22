@@ -29,12 +29,13 @@ public class SearchIndex<T> extends RecursiveTask<Integer> {
         }
 
         int mid = (from + to) / 2;
-        // создаем задачи для сортировки частей
+        // разбиваем текущую задачу на подзадачи - создаем задачи для сортировки частей
         SearchIndex leftSearchIndex = new SearchIndex(array, from, mid, el);
         SearchIndex rightSearchIndex = new SearchIndex(array, mid + 1, to, el);
         // производим деление. оно будет происходить, пока в частях не останется по одному элементу
         leftSearchIndex.fork();
         rightSearchIndex.fork();
+        // Секция слияния результатов
         // объединяем полученные результаты
         Integer left = (Integer) leftSearchIndex.join();
         Integer right = (Integer) rightSearchIndex.join();
